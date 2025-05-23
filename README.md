@@ -3,10 +3,6 @@
 ![Method](https://github.com/user-attachments/assets/c48c4208-cb36-4892-a664-e8d249dee8f4)
 This repository contains the code for the TK_Mamba project, designed for medical image segmentation tasks. The code supports training and evaluation on multiple datasets, including the Medical Segmentation Decathlon (MSD) and a modified KiTS23 dataset.
 
-## Paper
-
-The related research paper is available on arXiv: [Insert arXiv URL here]
-
 ## Datasets
 
 The project uses the following datasets:
