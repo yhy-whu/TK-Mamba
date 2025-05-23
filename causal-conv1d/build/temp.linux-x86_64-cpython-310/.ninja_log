@@ -1,0 +1,9 @@
+# ninja log v5
+2	5696	1730103226072560348	/root/autodl-tmp/SegMamba/SegMamba-main/causal-conv1d/build/temp.linux-x86_64-cpython-310/csrc/causal_conv1d_update.o	6d650cdc5f0851ec
+1	13739	1730103234103823830	/root/autodl-tmp/SegMamba/SegMamba-main/causal-conv1d/build/temp.linux-x86_64-cpython-310/csrc/causal_conv1d_fwd.o	a9d47a3fbea4f216
+0	16649	1730103237003559206	/root/autodl-tmp/SegMamba/SegMamba-main/causal-conv1d/build/temp.linux-x86_64-cpython-310/csrc/causal_conv1d.o	ffc6e1bfe5856753
+1	40160	1730103260477441993	/root/autodl-tmp/SegMamba/SegMamba-main/causal-conv1d/build/temp.linux-x86_64-cpython-310/csrc/causal_conv1d_bwd.o	a47949bba1867c5a
+8	4444	1735901423271648757	/root/autodl-tmp/CLIP/causal-conv1d/build/temp.linux-x86_64-cpython-310/csrc/causal_conv1d_update.o	1228843abf9b9865
+8	15022	1735901433843413065	/root/autodl-tmp/CLIP/causal-conv1d/build/temp.linux-x86_64-cpython-310/csrc/causal_conv1d_fwd.o	1c1de038e5606d1a
+7	16185	1735901435027386697	/root/autodl-tmp/CLIP/causal-conv1d/build/temp.linux-x86_64-cpython-310/csrc/causal_conv1d.o	8cd5bd92c80d89c1
+7	38095	1735901456874901112	/root/autodl-tmp/CLIP/causal-conv1d/build/temp.linux-x86_64-cpython-310/csrc/causal_conv1d_bwd.o	8a0fa1b91f2ba7d2
