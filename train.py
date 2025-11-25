@@ -7,11 +7,10 @@ from tqdm import tqdm
 import os
 import argparse
 import time
-import clip 
 import warnings
 import json
 warnings.filterwarnings("ignore")
-
+from transformers import CLIPProcessor, CLIPModel
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel
 from tensorboardX import SummaryWriter
@@ -136,16 +135,27 @@ def process(args):
     print(f"Rank {rank} using device {args.device}, CUDA device count: {torch.cuda.device_count()}")
     print(f"Current CUDA device: {torch.cuda.current_device()}")
 
-    clip_model, _ = clip.load("ViT-B/32", device=args.device)
-
+    model_id = "flaviagiammarino/pubmed-clip-vit-base-patch32"
+    if rank == 0: 
+        print(f"Loading Med-CLIP model '{model_id}'...")
+        
+    try:
+        clip_model = CLIPModel.from_pretrained(model_id).to(args.device)
+        processor = CLIPProcessor.from_pretrained(model_id)
+        if rank == 0:
+            print("Med-CLIP model loaded successfully.")
+    except Exception as e:
+        if rank == 0:
+            print(f"Failed to load Med-CLIP model: {e}")
+        exit()
 
     with open('/root/autodl-tmp/TK_Mamba/text_description/text_descriptions.json', 'r') as f:
         text_descriptions = json.load(f)
 
 
     texts = [text_descriptions[organ] for organ in ORGAN_NAME]
+    
     max_context_length = 77 
-
     split_texts = []
     for text in texts:
         split_sentences = split_text_by_tokens(text, max_context_length)
@@ -154,14 +164,21 @@ def process(args):
 
     all_text_features = []
     for sentences in split_texts:
-        text_tokens = clip.tokenize(sentences).to(args.device) 
+        inputs = processor(
+            text=sentences, 
+            return_tensors="pt", 
+            padding=True, 
+            truncation=True 
+        ).to(args.device)
+        
         with torch.no_grad():
-            text_features = clip_model.encode_text(text_tokens).float() 
+            text_features = clip_model.get_text_features(**inputs).float() 
             all_text_features.append(text_features)
-
 
     final_text_features = [torch.mean(features, dim=0) for features in all_text_features]
     text_features = torch.stack(final_text_features)  # [NUM_CLASS, 512]
+
+
     # prepare the 3D model
     model = Universal_model(img_size=(args.roi_x, args.roi_y, args.roi_z),
                     in_channels=1,
